@@ -1,0 +1,5 @@
+.vscode
+.env
+.env.prod
+.env.dev
+.dev.vars
