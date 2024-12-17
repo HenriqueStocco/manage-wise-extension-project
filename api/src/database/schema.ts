@@ -1,93 +1,37 @@
-import { pgTable, foreignKey, text, bigint, timestamp, doublePrecision, integer } from "drizzle-orm/pg-core"
+import { pgTable, timestamp, uuid, varchar } from 'drizzle-orm/pg-core'
+/*
+ * Importação das permissões (não utilizado)
+ * import { permissionsDefault, type Permissions } from './permissions'
+ */
 
-export const expenseByCategory = pgTable("ExpenseByCategory", {
-  expenseByCategoryId: text().primaryKey().notNull(),
-  expenseSummaryId: text().notNull(),
-  category: text().notNull(),
-  // You can use { mode: "bigint" } if numbers are exceeding js number limitations
-  amount: bigint({ mode: "number" }).notNull(),
-  date: timestamp({ precision: 3, mode: 'string' }).notNull(),
-}, (table) => {
-  return {
-    expenseByCategoryExpenseSummaryIdFkey: foreignKey({
-      columns: [table.expenseSummaryId],
-      foreignColumns: [expenseSummary.expenseSummaryId],
-      name: "ExpenseByCategory_expenseSummaryId_fkey"
-    }).onUpdate("cascade").onDelete("restrict"),
-  }
-});
+/** Tabela de criação de usuários.
+ * Pensei em utilizar permissões para limitar acesso de cada funcionário de uma empresa,
+ * mas ficaria complexo demais de inserir/alterar elas no cliente,
+ * e eu sou preguiçoso. Mas abaixo mantive um exemplo de como poderiamos fazer isso.
+ * Poupem me do trabalho, tenho bastante já.
+ */
+export const users = pgTable('users', {
+  id: uuid('id').primaryKey().notNull().unique(),
+  name: varchar('name', { length: 150 }).notNull(),
+  email: varchar('email', { length: 180 }).notNull(),
+  password: varchar('hashed_password', { length: 255 }).notNull(),
+  cpf: varchar('cpf', { length: 11 }),
+  companyId: uuid('company_id').references(() => enterprises.id),
+  // permissions: jsonb('permissions').$type<Permissions>().default(permissionsDefault).notNull(),
+  createdAt: timestamp('created_at', { withTimezone: false, mode: 'string' }).defaultNow().notNull(),
+  updatedAt: timestamp('updated_at', { mode: 'string', withTimezone: false }).defaultNow().notNull(),
+})
 
-export const expenseSummary = pgTable("ExpenseSummary", {
-  expenseSummaryId: text().primaryKey().notNull(),
-  totalExpenses: doublePrecision().notNull(),
-  date: timestamp({ precision: 3, mode: 'string' }).notNull(),
-});
-
-export const expenses = pgTable("Expenses", {
-  expenseId: text().primaryKey().notNull(),
-  category: text().notNull(),
-  amount: doublePrecision().notNull(),
-  timestamp: timestamp({ precision: 3, mode: 'string' }).notNull(),
-});
-
-export const products = pgTable("Products", {
-  productId: text().primaryKey().notNull(),
-  name: text().notNull(),
-  price: doublePrecision().notNull(),
-  rating: doublePrecision(),
-  stockQuantity: integer().notNull(),
-});
-
-export const purchaseSummary = pgTable("PurchaseSummary", {
-  purchaseSummaryId: text().primaryKey().notNull(),
-  totalPurchased: doublePrecision().notNull(),
-  changePercentage: doublePrecision(),
-  date: timestamp({ precision: 3, mode: 'string' }).notNull(),
-});
-
-export const purchases = pgTable("Purchases", {
-  purchaseId: text().primaryKey().notNull(),
-  productId: text().notNull(),
-  timestamp: timestamp({ precision: 3, mode: 'string' }).notNull(),
-  quantity: integer().notNull(),
-  unitCost: doublePrecision().notNull(),
-  totalCost: doublePrecision().notNull(),
-}, (table) => {
-  return {
-    purchasesProductIdFkey: foreignKey({
-      columns: [table.productId],
-      foreignColumns: [products.productId],
-      name: "Purchases_productId_fkey"
-    }).onUpdate("cascade").onDelete("restrict"),
-  }
-});
-
-export const sales = pgTable("Sales", {
-  saleId: text().primaryKey().notNull(),
-  productId: text().notNull(),
-  timestamp: timestamp({ precision: 3, mode: 'string' }).notNull(),
-  quantity: integer().notNull(),
-  unitPrice: doublePrecision().notNull(),
-  totalAmount: doublePrecision().notNull(),
-}, (table) => {
-  return {
-    salesProductIdFkey: foreignKey({
-      columns: [table.productId],
-      foreignColumns: [products.productId],
-      name: "Sales_productId_fkey"
-    }).onUpdate("cascade").onDelete("restrict"),
-  }
-});
-
-export const salesSummary = pgTable("SalesSummary", {
-  salesSummaryId: text().primaryKey().notNull(),
-  totalValue: doublePrecision().notNull(),
-  changePercentage: doublePrecision(),
-  date: timestamp({ precision: 3, mode: 'string' }).notNull(),
-});
-
-export const users = pgTable("Users", {
-  userId: text().primaryKey().notNull(),
-  name: text().notNull(),
-  email: text().notNull(),
-});
+/* Tabela de cadastro de empresas,
+ * procurei ser o mais simples possivel para evitar a complexidade nas inserções,
+ * mantendo apenas o essencial.
+ * Aqui poderiamos adicionar um vinculo a uma tabela de endereços e
+ * um código de acesso para cada empresa (apenas para evitar a digitção constante do cnpj da mesma).
+ */
+export const enterprises = pgTable('enterprises', {
+  id: uuid('id').primaryKey().unique().notNull(),
+  name: varchar('name', { length: 200 }).notNull(),
+  cnpj: varchar('cnpj', { length: 14 }).notNull(),
+  createdAt: timestamp('created_at', { withTimezone: false, mode: 'string' }).defaultNow().notNull(),
+  updatedAt: timestamp('updated_at', { mode: 'string', withTimezone: false }).defaultNow().notNull(),
+})

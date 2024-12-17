@@ -1,41 +1,15 @@
 import { Hono } from 'hono'
 
-import { users } from './router/users'
-import { dashboard } from './router/dashboard'
-import { expenses } from './router/expenses'
-import { product } from './router/products'
+const app = new Hono()
 
-const app = new Hono<{ Bindings: CloudflareBindings }>()
+app.get('/', c => {
+  return c.text('Hello Hono!')
+})
 
-// Função para adicionar os cabeçalhos de CORS
-function setCorsHeaders(res: Response) {
-  res.headers.set("Access-Control-Allow-Origin", "*");
-  res.headers.set("Access-Control-Allow-Methods", "OPTIONS, GET, POST, PUT");
-  res.headers.set("Access-Control-Allow-Headers", "Authorization, Content-Type");
-  res.headers.set("Access-Control-Max-Age", "86400");
-  res.headers.set("Content-Type", "application/json");
-}
-
-/* Routes */
-app.route('/users', users)
-app.route('/dashboard', dashboard)
-app.route('/expenses', expenses)
-app.route('/products', product)
-
+/** Utilizar o próprio servidor do Bun para desenvolvimento local
+ * Mas podemos utilizar o wrangler também para local(recomendado).
+ */
 export default {
-  async fetch(request: Request, env: CloudflareBindings, ctx: ExecutionContext) {
-    if (request.method === "OPTIONS") {
-      // Responder às requisições OPTIONS (preflight)
-      const response = new Response(null, { status: 204 });
-      setCorsHeaders(response);
-      return response;
-    }
-
-    // Processa a requisição normal
-    const response = await app.fetch(request, env, ctx);
-
-    // Adiciona cabeçalhos CORS na resposta final
-    setCorsHeaders(response);
-    return response;
-  },
+  port: 3000,
+  fetch: app.fetch,
 }

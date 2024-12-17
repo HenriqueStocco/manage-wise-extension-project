@@ -1,0 +1,133 @@
+--------------------------------
+PERMISSÕES
+
+- Criar usuarios
+- Ver usuarios
+- Criar produtos
+- Ver produtos
+- Editar produtos
+
+---------------------------------
+AÇÕES
+
+- Entrar no sistema
+- Sair do sistema
+- Criar produtos
+- Alterar produtos
+- Ver todos os produtos
+- Ver produtos por categoria
+- Cadastrar categoria
+- Criar usuarios
+- Ver todos os usuarios
+
+------------------------------------
+Banco de dados
+
+- Usuarios
+- Produtos
+- Categorias
+- Sessao de usuario
+-----------------------------------
+Major Role
+
+Um usuario (que será adm) se cadastra,
+cria a empresa e funcionarios (usuarios) dessa
+empresa. Da permissao para usuarios especificos
+a criar outros usuarios e produtos.
+import { pgTable, text, timestamp, integer, uuid, varchar, jsonb, serial } from "drizzle-orm/pg-core"
+import { Permissions, permissionsDefault } from "./validators/permissions";
+
+/**
+ * Usada para armazenar sessoes de usuario ate a data de expiracao ou logout
+ */
+export const userSession = pgTable("user_session", {
+  id: varchar('id').primaryKey().notNull(),
+  userId: uuid('id').notNull().references(() => user.id),
+  expiresAt: timestamp('expires_at', { withTimezone: false, mode: "date" }).notNull()
+})
+
+export const user = pgTable("user", {
+  id: uuid('id').primaryKey().notNull().unique(),
+  name: varchar('name', { length: 255 }).notNull(),
+  email: varchar('email', { length: 255 }).notNull(),
+  password: varchar('hashed_password', { length: 255 }).notNull(),
+  cpf: varchar('cpf', { length: 11 }).notNull(),
+  companyId: uuid('company_id').notNull().references(() => company.id),
+  permissions: jsonb('permissions').$type<Permissions>().default(permissionsDefault).notNull(),
+  createdAt: timestamp('created_at', { mode: 'date', withTimezone: true }).notNull().defaultNow(),
+});
+
+export const company = pgTable("company", {
+  id: uuid('id').primaryKey().notNull().unique(),
+  name: varchar('name', { length: 255 }).notNull(),
+  cnpj: varchar('cnpj', { length: 14 }).notNull().unique(),
+  code: varchar('code', { length: 10 }).notNull().unique(),
+  createdAt: timestamp('created_at', { mode: 'date', withTimezone: true }).notNull().defaultNow(),
+})
+
+// export const userToCompany = pgTable('user_to_enterprise', {
+//   id: uuid('id').primaryKey().notNull(),
+//   userId: uuid('user_id').notNull().references(() => user.id),
+//   companyId: uuid('company_id').notNull().references(() => company.id)
+// })
+
+export const product = pgTable("product", {
+  id: serial('id').primaryKey().notNull(),
+  name: varchar('name', { length: 255 }).notNull(),
+  description: varchar('description', { length: 255 }),
+  code: integer('code').notNull(),
+  quantity: integer('quantity').notNull(),
+  note: text(),
+  companyId: uuid('company_id').notNull().references(() => company.id),
+  category: integer('category_id').notNull().references(() => category.id),
+  createdAt: timestamp('created_at', { mode: 'date', withTimezone: true }).notNull().defaultNow(),
+  updateAt: timestamp('updated_at', { mode: 'date', withTimezone: true }).notNull().defaultNow()
+});
+
+export const category = pgTable('category', {
+  id: uuid('id').primaryKey().notNull(),
+  name: varchar('name', { length: 255 }).notNull(),
+})
+
+import z from 'zod'
+
+export const permissionsSchema = z.object({
+  users: z.object({
+    create: z.boolean(),
+    read: z.boolean(),
+  }),
+
+  products: z.object({
+    create: z.boolean(),
+    read: z.boolean(),
+    update: z.boolean(),
+  })
+})
+
+export const permissionsDefault: Permissions = {
+  users: {
+    create: false,
+    read: true,
+  },
+  products: {
+    create: true,
+    read: true,
+    update: true,
+  }
+}
+
+export type Permissions = z.infer<typeof permissionsSchema>
+import { neon } from "@neondatabase/serverless";
+import { drizzle } from "drizzle-orm/neon-http";
+import dotenv from 'dotenv'
+import * as schema from './schema'
+
+dotenv.config();
+
+export const pgClient = (client: string) => {
+  const neonClient = neon(client)
+  return drizzle(neonClient, { schema });
+}
+
+export { schema }
+export { product } from './schema';

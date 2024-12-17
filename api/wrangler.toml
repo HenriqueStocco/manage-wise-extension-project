@@ -1,12 +1,28 @@
-#:schema node_modules/wrangler/config-schema.json
-name = "manage-wise-api"
+name = "api"
 main = "src/index.ts"
-account_id = "4aa839773109421527f1f0147e3557c0"
-compatibility_date = "2024-11-12"
+compatibility_date = "2024-12-16"
 
-compatibility_flags = ["nodejs_compat"]
+# compatibility_flags = [ "nodejs_compat" ]
 
-# Development
-# vars = { NEON_DATABASE_URL = "postgresql://postgres:postgres@localhost:5432/manage-wise" }
+# [vars]
+# MY_VAR = "my-variable"
 
-minify = true
+# [[kv_namespaces]]
+# binding = "MY_KV_NAMESPACE"
+# id = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+
+# [[r2_buckets]]
+# binding = "MY_BUCKET"
+# bucket_name = "my-bucket"
+
+# [[d1_databases]]
+# binding = "DB"
+# database_name = "my-database"
+# database_id = ""
+
+# [ai]
+# binding = "AI"
+
+# [observability]
+# enabled = true
+# head_sampling_rate = 1
