@@ -1,7 +1,5 @@
 import { Hono } from 'hono'
-
-import { jwt } from 'hono/jwt'
-
+import { authMiddleware } from './middleware/auth'
 import { auth } from './router/auth'
 import { users } from './router/users'
 import { dashboard } from './router/dashboard'
@@ -9,7 +7,6 @@ import { expenses } from './router/expenses'
 import { product } from './router/products'
 
 const app = new Hono<{ Bindings: CloudflareBindings }>()
-const authMiddleware = jwt({secret: 'lol'}) // <-- mudar isso plmds
 
 // Função para adicionar os cabeçalhos de CORS
 function setCorsHeaders(res: Response) {
