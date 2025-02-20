@@ -2,6 +2,7 @@ import { Hono } from 'hono'
 
 import { jwt } from 'hono/jwt'
 
+import { auth } from './router/auth'
 import { users } from './router/users'
 import { dashboard } from './router/dashboard'
 import { expenses } from './router/expenses'
@@ -25,6 +26,7 @@ app.use('/expenses/*', authMiddleware)
 app.use('/products/*', authMiddleware)
 
 /* Routes */
+app.route('/auth', auth)
 app.route('/users', users)
 app.route('/dashboard', dashboard)
 app.route('/expenses', expenses)
