@@ -1,11 +1,14 @@
 import { Hono } from 'hono'
 
+import { jwt } from 'hono/jwt'
+
 import { users } from './router/users'
 import { dashboard } from './router/dashboard'
 import { expenses } from './router/expenses'
 import { product } from './router/products'
 
 const app = new Hono<{ Bindings: CloudflareBindings }>()
+const authMiddleware = jwt({secret: 'lol'}) // <-- mudar isso plmds
 
 // Função para adicionar os cabeçalhos de CORS
 function setCorsHeaders(res: Response) {
@@ -15,6 +18,11 @@ function setCorsHeaders(res: Response) {
   res.headers.set("Access-Control-Max-Age", "86400");
   res.headers.set("Content-Type", "application/json");
 }
+
+/* Middlewares */
+app.use('/dashboard/*', authMiddleware)
+app.use('/expenses/*', authMiddleware)
+app.use('/products/*', authMiddleware)
 
 /* Routes */
 app.route('/users', users)
