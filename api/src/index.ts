@@ -1,5 +1,6 @@
 import { Hono } from 'hono'
-
+import { authMiddleware } from './middleware/auth'
+import { auth } from './router/auth'
 import { users } from './router/users'
 import { dashboard } from './router/dashboard'
 import { expenses } from './router/expenses'
@@ -16,7 +17,13 @@ function setCorsHeaders(res: Response) {
   res.headers.set("Content-Type", "application/json");
 }
 
+/* Middlewares */
+app.use('/dashboard/*', authMiddleware)
+app.use('/expenses/*', authMiddleware)
+app.use('/products/*', authMiddleware)
+
 /* Routes */
+app.route('/auth', auth)
 app.route('/users', users)
 app.route('/dashboard', dashboard)
 app.route('/expenses', expenses)
