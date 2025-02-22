@@ -1,0 +1,10 @@
+.env
+.env.local
+.dev.vars
+.env.prod
+.vscode
+node_modules
+*.crt
+*.pem
+*.key
+.vscode
