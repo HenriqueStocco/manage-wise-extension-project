@@ -16,6 +16,18 @@
     "paths": {
       "@/*": [
         "src/*"
+      ],
+      "@/db/*": [
+        "src/database/*"
+      ],
+      "@/server/*": [
+        "src/server/*"
+      ],
+      "@/config/*": [
+        "src/config/*"
+      ],
+      "@/utils/*": [
+        "src/utils/*"
       ]
     },
     "allowImportingTsExtensions": true,
