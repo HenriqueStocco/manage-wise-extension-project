@@ -1,13 +1,12 @@
 import { Hono } from 'hono'
-import { ZodError } from 'zod'
 import { zValidator } from '@hono/zod-validator'
 import { eq, pgPool, postgresClient } from '@/database/index.ts'
 import { usersTable } from '@/database/schemas/users.ts'
 import { insertUserSchema } from '../dto/types.ts'
 import { sign } from 'hono/jwt'
+import bcrypt from 'bcryptjs'
 
-
-export const auth = new Hono<{ Bindings: Bindings }>().basePath('/auth/v1')
+export const auth = new Hono<{ Bindings: Bindings }>().basePath('/auth')
 
 
 auth.post(
@@ -15,15 +14,19 @@ auth.post(
   zValidator('json', insertUserSchema),
   async ctx => {
     /* Pog */
-    const requestBody = ctx.req.valid('json')
+    var requestBody = ctx.req.valid('json')
+
+    if (!requestBody) return ctx.json({message: "Erro ao salvar o request"}, 401)
 
     try {
       const client = new pgPool({
         connectionString: ctx.env.NODE_ENV === 'development' ? ctx.env.DATABASE_URL : ctx.env.SUPABASE_URL,
       })
+ 
       if (!client) return ctx.json({message: 'Erro ao instanciar a pool do DB'}, 401)
 
       const drizzle = postgresClient(client)
+      
       if (!drizzle) return ctx.json({message: 'Erro ao instanciar client do DB'}, 401)
         
     // 1. Validar se possui email no DB
@@ -37,6 +40,10 @@ auth.post(
                                 .where(eq(usersTable.email, requestBody.email))
                                 .limit(1)
     if (searchEmail) return ctx.json({message: 'Email já cadastrado em nosso banco de dados!'}, 401)
+    
+    const salt = bcrypt.genSaltSync(10);
+    requestBody.password = bcrypt.hashSync(requestBody.password, salt);
+    
 
     const insertedUser = await drizzle
                                 .insert(usersTable)
@@ -51,25 +58,10 @@ auth.post(
 
 
     /* not pog */
-    /* Copiei de tu fds, arrumar essa parada ae*/
     } catch (errors) {
-      if (errors instanceof ZodError) {
-        const validationErrors = errors as ZodError<unknown>
-        const objectErrors: Record<string, string> = {}
-
-        for (const err of [validationErrors]) {
-          if (!err.name) return
-
-          objectErrors[String(err.name)] = err.message
-        }
-
-        return ctx.json({ errors: objectErrors }, 400)
-      }
-
-      console.error(errors)
-      return ctx.json({ error: 'Internal Server Error' }, 500)
-    }
-  }
+        console.error(errors)
+        return ctx.json({message: "Problema interno ao registrar o usuário!"})
+    } 
 )
 
 auth.post(
