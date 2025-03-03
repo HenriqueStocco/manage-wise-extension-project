@@ -11,11 +11,18 @@ const productsTable = pgTable('products', {
   imageName: varchar('image_name', { length: 150 }),
   imageType: varchar('image_type', { length: 50 }),
   categoryId: uuid('category_id').references(() => categories.id),
-  createdAt: timestamp('created_at', { mode: 'string', withTimezone: false }).defaultNow().notNull(),
-  updatedAt: timestamp('updated_at', { mode: 'string', withTimezone: false }).defaultNow().notNull(),
+  createdAt: timestamp('created_at', { mode: 'string', withTimezone: false })
+    .defaultNow()
+    .notNull(),
+  updatedAt: timestamp('updated_at', { mode: 'string', withTimezone: false })
+    .defaultNow()
+    .notNull(),
 })
 
 type ProductsSelectSchema = typeof productsTable.$inferSelect
-type ProductsInsertSchema = Omit<typeof productsTable.$inferInsert, 'id' | 'created_at' | 'updated_at'>
+type ProductsInsertSchema = Omit<
+  typeof productsTable.$inferInsert,
+  'id' | 'created_at' | 'updated_at'
+>
 
 export { productsTable, type ProductsSelectSchema, type ProductsInsertSchema }

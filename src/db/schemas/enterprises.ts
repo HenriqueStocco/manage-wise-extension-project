@@ -5,7 +5,9 @@ const enterprisesTable = pgTable('enterprises', {
   name: varchar('name', { length: 200 }).notNull(),
   cnpj: varchar('document', { length: 14 }).notNull().unique(),
   phone: varchar('phone', { length: 11 }),
-  createdAt: timestamp('created_at', { withTimezone: false, mode: 'string' }).defaultNow().notNull(),
+  createdAt: timestamp('created_at', { withTimezone: false, mode: 'string' })
+    .defaultNow()
+    .notNull(),
 })
 
 type EnteprisesSelectSchema = typeof enterprisesTable.$inferSelect

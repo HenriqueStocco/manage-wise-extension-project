@@ -12,7 +12,9 @@ const usersTable = pgTable('users', {
   enterpriseId: uuid('enterprise_id')
     .references(() => enterprises.id)
     .notNull(),
-  createdAt: timestamp('created_at', { withTimezone: false, mode: 'string' }).defaultNow().notNull(),
+  createdAt: timestamp('created_at', { withTimezone: false, mode: 'string' })
+    .defaultNow()
+    .notNull(),
 })
 
 type UsersSelectSchema = typeof usersTable.$inferSelect

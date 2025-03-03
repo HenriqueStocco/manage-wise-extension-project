@@ -53,8 +53,7 @@
 			"trailingCommas": "es5",
 			"semicolons": "asNeeded",
 			"enabled": true,
-			"indentWidth": 2,
-			"jsxQuoteStyle": "single"
+			"indentWidth": 2
 		}
 	}
 }

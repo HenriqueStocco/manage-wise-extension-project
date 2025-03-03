@@ -11,6 +11,9 @@ importers:
       '@hono/zod-validator':
         specifier: ^0.4.2
         version: 0.4.2(hono@4.6.20)(zod@3.24.1)
+      bcryptjs:
+        specifier: ^3.0.2
+        version: 3.0.2
       drizzle-orm:
         specifier: ^0.39.3
         version: 0.39.3(@cloudflare/workers-types@4.20250204.0)(@types/pg@8.11.11)(pg@8.13.1)(postgres@3.4.5)
@@ -765,6 +768,10 @@ packages:
 
   as-table@1.0.55:
     resolution: {integrity: sha512-xvsWESUJn0JN421Xb9MQw6AsMHRCUknCe0Wjlxvjud80mU4E6hQf1A6NzQKcYNmYw62MfzEtXc+badstZP3JpQ==}
+
+  bcryptjs@3.0.2:
+    resolution: {integrity: sha512-k38b3XOZKv60C4E2hVsXTolJWfkGRMbILBIe2IBITXciy5bOsTKot5kDrf3ZfufQtQOUN5mXceUEpU1rTl9Uog==}
+    hasBin: true
 
   blake3-wasm@2.1.5:
     resolution: {integrity: sha512-F1+K8EbfOZE49dtoPtmxUQrpXaBIl3ICvasLh+nJta0xkz+9kF/7uet9fLnwKqhDrmj6g+6K3Tw9yQPUg2ka5g==}
@@ -1558,6 +1565,8 @@ snapshots:
   as-table@1.0.55:
     dependencies:
       printable-characters: 1.0.42
+
+  bcryptjs@3.0.2: {}
 
   blake3-wasm@2.1.5: {}
 
