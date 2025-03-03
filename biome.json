@@ -19,7 +19,7 @@
 		"enabled": true,
 		"indentStyle": "space",
 		"indentWidth": 2,
-		"lineWidth": 120,
+		"lineWidth": 100,
 		"formatWithErrors": true,
 		"bracketSpacing": true,
 		"lineEnding": "lf"
@@ -49,7 +49,7 @@
 			"indentStyle": "space",
 			"lineEnding": "lf",
 			"quoteProperties": "asNeeded",
-			"lineWidth": 120,
+			"lineWidth": 100,
 			"trailingCommas": "es5",
 			"semicolons": "asNeeded",
 			"enabled": true,
