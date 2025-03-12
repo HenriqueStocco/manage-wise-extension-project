@@ -1,5 +1,6 @@
 // import { z } from "zod";
 /* Não faz sentido essas validações aqui sendo que já tem nos schemas do DB */
+// Você é fraco, por isso que não faz sentido, melhore 🌹🤠
 
 // export const insertUserSchema = z.object({
 //   name: z.string().min(1, { message: 'Nome é obrigatório' }),

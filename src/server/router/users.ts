@@ -9,6 +9,10 @@ import { pgPool, postgresClient } from '@/db/index.ts'
 
 export const users = new Hono<{ Bindings: Bindings }>().basePath('/user')
 
+users.get('/', async ctx => {
+  return ctx.json({ message: 'Hello there!!!' })
+})
+
 users.post(
   '/register',
   zValidator(

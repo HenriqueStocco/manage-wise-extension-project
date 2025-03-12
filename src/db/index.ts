@@ -1,4 +1,5 @@
-import { Pool, Client } from 'pg'
+import pg from 'pg'
+const { Pool, Client } = pg
 import { drizzle } from 'drizzle-orm/node-postgres'
 import { sql, eq, and, or, like, not, desc, asc, sum } from 'drizzle-orm'
 
@@ -11,8 +12,8 @@ const postgresClient = (client: Pool | Client) => {
 export {
   Pool as pgPool,
   Client as pgClient,
-  type Client,
-  type Pool,
+  Pool,
+  Client,
   postgresClient,
   sql,
   eq,

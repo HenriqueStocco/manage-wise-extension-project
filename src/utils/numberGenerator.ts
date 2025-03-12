@@ -1,3 +1,4 @@
+// Gera um numero aleatório 🌹🤠
 export function generateRandomNumber(length: number): number {
   const lowerLimit = 10 ** (length - 1)
   const upperLimit = 10 ** length
