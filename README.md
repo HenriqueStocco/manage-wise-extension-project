@@ -1,53 +1,29 @@
-# Manage Wise
+# Next.js Static Export
 
-### ⚙️ Description
+Next.js enables starting as a static site or Single-Page Application (SPA), then later optionally upgrading to use features that require a server.
 
-Manage Wise is designed to manage a company's active products, making them easier to organize and faster.
+When running `next build`, Next.js generates an HTML file per route. By breaking a strict SPA into individual HTML files, Next.js can avoid loading unnecessary JavaScript code on the client-side, reducing the bundle size and enabling faster page loads.
 
-<h2 id="stack">💻 Stack</h2>
+Learn more: https://nextjs.org/docs/app/building-your-application/deploying/static-exports
 
-[![My Skills](https://skillicons.dev/icons?i=ts,docker,postgres,nextjs,tailwind,materialui,redux,workers,cloudflare,figma,git,github)](https://skillicons.dev)
+## Deploy your own
 
-### 📁 Structure
+Deploy the example using [Vercel](https://vercel.com?utm_source=github&utm_medium=readme&utm_campaign=next-example) or preview live with [StackBlitz](https://stackblitz.com/github/vercel/next.js/tree/canary/examples/with-static-export)
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/vercel/next.js/tree/canary/examples/with-static-export)
+
+## How to use
+
+Execute [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app) with [npm](https://docs.npmjs.com/cli/init), [Yarn](https://yarnpkg.com/lang/en/docs/cli/create/), or [pnpm](https://pnpm.io) to bootstrap the example:
 
 ```bash
-<root-project>
-
-api
-  |-- src/
-  |   |-- router/
-  |   |-- database/
-  |-- <environment>
-
-app
-  |-- src
-  |   |-- app/
-  |   |-- states/
-  |   |-- styles/
-  |-- <environment>
+npx create-next-app --example with-static-export with-static-export-app
 ```
 
-<h2 id="colab">🤝 Authors</h2>
+```bash
+yarn create next-app --example with-static-export with-static-export-app
+```
 
-Special thank you for all people that contributed for this project.
-
-<table>
-  <tr>
-    <td align="center">
-      <a href="https://github.com/HenriqueStocco">
-        <img src="https://avatars.githubusercontent.com/u/102703502?s=400&u=96a7b4e561b36df3315148452205cb4d340e084d&v=4" width="100px;" alt="Henrique Stocco Picture"/><br>
-        <sub>
-          <b>Henrique Stocco</b>
-        </sub>
-      </a>
-    </td>
-    <td align="center">
-      <a href="https://github.com/NandoSchlemper">
-        <img src="https://avatars.githubusercontent.com/u/129208500?v=4" width="100px;" alt="Fernando Schlemper Picture"/><br>
-        <sub>
-          <b>Fernando Schlemper</b>
-        </sub>
-      </a>
-    </td>
-  </tr>
-</table>
+```bash
+pnpm create next-app --example with-static-export with-static-export-app
+```
