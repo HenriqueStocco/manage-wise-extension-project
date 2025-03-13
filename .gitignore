@@ -8,3 +8,4 @@ node_modules
 *.pem
 *.key
 .vscode
+.svelte-kit
