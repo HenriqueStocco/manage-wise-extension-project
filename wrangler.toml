@@ -1,0 +1,9 @@
+[env.dev]
+name = "pedro"
+
+[env.dev.vars]
+HONO_PORT=3030
+SUPABASE_URL='postgresql://user:password@netloc:5252/dbname'
+DATABASE_URL='postgresql://user:password@netloc:5252/dbname'
+JWT_SECRET='baasid'
+NODE_ENV='dev'
