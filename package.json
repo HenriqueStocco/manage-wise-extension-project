@@ -6,7 +6,7 @@
   "type": "commonjs",
   "scripts": {
     "dev": "tsx --env-file=.env ./src/index.ts",
-    "dev:wrangler": "wrangler dev --env dev ./src/index.ts",
+    "dev:wrangler": "wrangler dev ./src/index.ts",
     "db:generate": "npx drizzle-kit generate --config=./src/database/drizzle.config.ts",
     "db:migrate": "npx drizzle-kit migrate --config=./src/database/drizzle.config.ts",
     "db:drop": "npx drizzle-kit drop --out=./src/database/migrations",
