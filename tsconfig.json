@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "_version": "22.0.0",
+  "compilerOptions": {
+    "lib": [
+      "ESNext",
+      "WebWorker"
+    ],
+    "module": "NodeNext",
+    "target": "ESNext",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "moduleResolution": "nodenext",
+    "baseUrl": ".",
+    "paths": {
+      "@/*": [
+        "src/*"
+      ],
+      "@/db/*": [
+        "src/db/*"
+      ],
+      "@/server/*": [
+        "src/server/*"
+      ],
+      "@/config/*": [
+        "src/config/*"
+      ],
+      "@/utils/*": [
+        "src/utils/*"
+      ]
+    },
+    "allowImportingTsExtensions": true,
+    "noEmit": true
+  },
+  "include": [
+    "./"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}

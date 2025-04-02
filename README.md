@@ -1,53 +1,47 @@
-# Manage Wise
+# Especificações da API
 
-### ⚙️ Description
+### Rotas
 
-Manage Wise is designed to manage a company's active products, making them easier to organize and faster.
+```
+POST /api/v1/login
+POST /api/v1/admin/user/craete
+POST /api/v1/admin/enterprise/create
+POST /api/v1/product/create
 
-<h2 id="stack">💻 Stack</h2>
+GET /api/v1/product/list  -> list all
+GET /api/v1/product/list/ -> list by category
 
-[![My Skills](https://skillicons.dev/icons?i=ts,docker,postgres,nextjs,tailwind,materialui,redux,workers,cloudflare,figma,git,github)](https://skillicons.dev)
+PUT /api/v1/product/:id
 
-### 📁 Structure
-
-```bash
-<root-project>
-
-api
-  |-- src/
-  |   |-- router/
-  |   |-- database/
-  |-- <environment>
-
-app
-  |-- src
-  |   |-- app/
-  |   |-- states/
-  |   |-- styles/
-  |-- <environment>
+DELETE /api/v1/product/:id
 ```
 
-<h2 id="colab">🤝 Authors</h2>
+#### Sobre as rotas
 
-Special thank you for all people that contributed for this project.
+- Cada novo usuario estara vinculado apenas a uma empresa.
+- Os produtos são vinculados a uma empresa e vinculado ao usuario que o criou.
+- A empresa não tem vinculo ao ser criada, mas um usuario precisa ser vinculado a uma empresa.
+- Admin(dev) cria o primeiro(ou de outros usuarios "principais" e a empresa de tal) e este usuario cria o resto.
+- Somente o dev cria a empresa e o primeiro usuario da empresa.
 
-<table>
-  <tr>
-    <td align="center">
-      <a href="https://github.com/HenriqueStocco">
-        <img src="https://avatars.githubusercontent.com/u/102703502?s=400&u=96a7b4e561b36df3315148452205cb4d340e084d&v=4" width="100px;" alt="Henrique Stocco Picture"/><br>
-        <sub>
-          <b>Henrique Stocco</b>
-        </sub>
-      </a>
-    </td>
-    <td align="center">
-      <a href="https://github.com/NandoSchlemper">
-        <img src="https://avatars.githubusercontent.com/u/129208500?v=4" width="100px;" alt="Fernando Schlemper Picture"/><br>
-        <sub>
-          <b>Fernando Schlemper</b>
-        </sub>
-      </a>
-    </td>
-  </tr>
-</table>
+
+### Stack
+
+- Node.js
+- Hono
+- Drizzle-ORM | Kit
+- Zod
+- PNPM
+- TypeScript
+- @hono/jwt
+- @hono/cors
+- @hono/swagger-ui
+- PostgreSQL
+- Wrangler
+
+
+### Services
+
+- Cloudflare Workers
+- R2 Bucket
+- Neon Serverless Postgres Database
