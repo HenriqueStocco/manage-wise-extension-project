@@ -1,6 +1,11 @@
 package server
 
-import "net/http"
+import (
+	"manage-wise/cmd/containers"
+	"net/http"
+
+	"gorm.io/gorm"
+)
 
 type HttpServer struct {
 	Addr   string
@@ -16,4 +21,10 @@ func NewHttpServer(addr string, mux *http.ServeMux) *HttpServer {
 
 func (h *HttpServer) Serve() {
 	http.ListenAndServe(h.Addr, h.Server)
+}
+
+func (h *HttpServer) AlocateContainers(db *gorm.DB) {
+	loginHandler := containers.LoginContainer(db)
+
+	h.Server.HandleFunc("/api/login", loginHandler.Login)
 }
