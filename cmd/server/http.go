@@ -26,5 +26,5 @@ func (h *HttpServer) Serve() {
 func (h *HttpServer) AlocateContainers(db *gorm.DB) {
 	loginHandler := containers.LoginContainer(db)
 
-	h.Server.HandleFunc("/api/login", loginHandler.Login)
+	h.Server.HandleFunc("POST /api/login", loginHandler.Login)
 }

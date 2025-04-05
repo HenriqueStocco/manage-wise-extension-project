@@ -1,19 +1,21 @@
 package database
 
 import (
-	"database/sql"
+	"manage-wise/cmd/domain"
 
-	_ "github.com/lib/pq"
+	"gorm.io/gorm"
 )
 
 type Database struct {
-	db *sql.DB
+	db *gorm.DB
 }
 
-func NewDatabase(db *sql.DB) *Database {
+func NewDatabase(db *gorm.DB) *Database {
 	return &Database{
 		db: db,
 	}
 }
 
-func Migrate(db *sql.DB) {} // do the migrations
+func Migrate(db *gorm.DB) {
+	db.AutoMigrate(&domain.UserPayload{}) // substitute this after
+} // do the migrations
