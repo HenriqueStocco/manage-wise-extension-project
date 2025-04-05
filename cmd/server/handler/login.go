@@ -40,7 +40,7 @@ func (l *loginHandler) Login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	utils.CreateJwtCookie(userInserted, r)
+	utils.CreateJwtCookie(userInserted, w)
 
 	fmt.Fprintf(w, "Person: %+v\n", userInserted)
 }
