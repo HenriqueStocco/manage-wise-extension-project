@@ -10,11 +10,11 @@ import (
 )
 
 type CustomClaims struct {
-	User *domain.UserPayload `json:"user"`
+	User *domain.User `json:"user"`
 	jwt.RegisteredClaims
 }
 
-func CreateJwtCookie(user *domain.UserPayload, ctx http.ResponseWriter) error {
+func CreateJwtCookie(user *domain.User, ctx http.ResponseWriter) error {
 	claims := CustomClaims{
 		User: user,
 		RegisteredClaims: jwt.RegisteredClaims{
@@ -45,7 +45,7 @@ func CreateJwtCookie(user *domain.UserPayload, ctx http.ResponseWriter) error {
 	return nil
 }
 
-func AuthenticateUserByToken(tokenString string) (*domain.UserPayload, error) {
+func AuthenticateUserByToken(tokenString string) (*domain.User, error) {
 	secret := "metalica"
 	if secret == "" {
 		return nil, fmt.Errorf("configuração de segurança faltante")

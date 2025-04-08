@@ -10,7 +10,7 @@ import (
 
 func LoginContainer(db *gorm.DB) handler.ILoginHandler {
 	userRepo := impl.NewUserRepository(db)
-	loginService := services.NewLoginService(userRepo)
-	loginHandler := handler.NewLoginHandler(loginService)
+	loginService := services.NewAuthService(userRepo)
+	loginHandler := handler.NewAuthHandler(loginService)
 	return loginHandler
 }
