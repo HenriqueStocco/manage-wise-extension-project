@@ -9,15 +9,15 @@ type Category struct {
 }
 
 type User struct {
-	ID       uuid.UUID `gorm:"type:uuid;default:uuid_generate_v4();primaryKey"`
+	ID       uuid.UUID `json:"id" gorm:"type:uuid;default:gen_random_uuid();primaryKey"`
 	Username string    `json:"username"`
 	Email    string    `json:"email" gorm:"unique"`
 	Password string    `json:"password"`
 }
 
 type Enterprise struct {
-	ID       uuid.UUID `gorm:"type:uuid;default:uuid_generate_v4();primaryKey"`
-	Name     string
-	Document string
-	Phone    string
+	ID       uuid.UUID `json:"id" gorm:"type:uuid;default:uuid_generate_v4();primaryKey"`
+	Name     string    `json:"name"`
+	Document string    `json:"document" gorm:"unique"`
+	Phone    string    `json:"phone"`
 }

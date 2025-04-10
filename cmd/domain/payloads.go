@@ -10,8 +10,13 @@ type UserPayload struct {
 	Password string `json:"password"`
 }
 
+type UserLoginPayload struct {
+	Email    string `json:"email"`
+	Password string `json:"password"`
+}
+
 type EnterprisePayload struct {
-	Name     string
-	Document string
-	Phone    string
+	Name     string `json:"name"`
+	Document string `json:"document"`
+	Phone    string `json:"phone"`
 }

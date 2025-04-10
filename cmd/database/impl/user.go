@@ -9,7 +9,7 @@ import (
 
 type IUserRepository interface {
 	Add(user *domain.UserPayload) (*domain.User, error)
-	Verify(user *domain.UserPayload) error
+	VerifyByEmail(userEmail string) (*domain.User, error)
 }
 
 type userRepository struct {
@@ -18,31 +18,32 @@ type userRepository struct {
 
 // change to User after
 func (c *userRepository) Add(user *domain.UserPayload) (*domain.User, error) {
+	var userResult *domain.User
 	userPayload := domain.User{
 		Username: user.Username,
 		Email:    user.Email,
 		Password: user.Password,
 	}
-	result := c.db.Create(&userPayload)
+	result := c.db.Create(&userPayload).Scan(&userResult)
 	if result.Error != nil {
-		return nil, fmt.Errorf("erro ao criar o usuário no banco")
+		return nil, fmt.Errorf("erro ao criar o usuário no banco\n%+v", result.Error)
 	}
 
-	return &userPayload, nil
+	return userResult, nil
 }
 
-func (c *userRepository) Verify(user *domain.UserPayload) error {
-	var existingUser domain.User
-	result := c.db.Where("email = ?", user.Email).First(&existingUser)
+func (c *userRepository) VerifyByEmail(userEmail string) (*domain.User, error) {
+	var existingUser *domain.User
+	result := c.db.Where("email = ?", userEmail).First(&existingUser)
 	if result.Error != nil {
-		return fmt.Errorf("erro ao validar o usuário")
+		return nil, fmt.Errorf("erro ao validar o usuário")
 	}
 
 	if result.RowsAffected == 0 {
-		return fmt.Errorf("usuário não encontrado no banco de dados")
+		return nil, fmt.Errorf("usuário não encontrado no banco de dados")
 	}
 
-	return nil
+	return existingUser, nil
 }
 
 func NewUserRepository(db *gorm.DB) IUserRepository {

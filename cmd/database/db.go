@@ -17,5 +17,6 @@ func NewDatabase(db *gorm.DB) *Database {
 }
 
 func Migrate(db *gorm.DB) {
-	db.AutoMigrate(&domain.UserPayload{}) // substitute this after
+	db.Raw("CREATE EXTENSION IF NOT EXISTS 'uuid-ossp';")
+	db.AutoMigrate(&domain.User{}) // substitute this after
 } // do the migrations

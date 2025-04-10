@@ -9,7 +9,7 @@ import (
 
 type IAuthService interface {
 	Register(ctx context.Context, user *d.UserPayload) error
-	Login(ctx context.Context, user *d.UserPayload) (*d.User, error)
+	Login(ctx context.Context, user *d.UserLoginPayload) (*d.User, error)
 }
 
 type loginService struct {
@@ -18,10 +18,18 @@ type loginService struct {
 
 // Login implements ILoginService.
 // will return token
-func (l *loginService) Login(ctx context.Context, user *d.UserPayload) (*d.User, error) {
-	result, err := l.UserRepository.Add(user)
+func (l *loginService) Login(ctx context.Context, user *d.UserLoginPayload) (*d.User, error) {
+	result, err := l.UserRepository.VerifyByEmail(user.Email)
 	if err != nil {
-		return nil, fmt.Errorf("erro ao repassar dados ao repositório do usuário para criação no banco")
+		return nil, fmt.Errorf("erro no serviço de login:\n%+v", err.Error())
+	}
+
+	// pmds isso é só um teste
+	// usar bcrypt dps e tirar essa validação porca
+	if user.Password != result.Password {
+		return nil, fmt.Errorf("erro no serviço de login, validação de senha\nSenhaUsuario:%s\nSenhaBanco:%s",
+			user.Password,
+			result.Password)
 	}
 
 	return result, nil
@@ -29,9 +37,14 @@ func (l *loginService) Login(ctx context.Context, user *d.UserPayload) (*d.User,
 
 // Register implements ILoginService.
 func (l *loginService) Register(ctx context.Context, user *d.UserPayload) error {
-	err := l.UserRepository.Verify(user)
+	_, err := l.UserRepository.VerifyByEmail(user.Email)
 	if err != nil {
-		return fmt.Errorf("erro ao verificar usuário no banco de dados")
+		return fmt.Errorf("erro no serviço de registro ao validar o usuário")
+	}
+
+	_, err = l.UserRepository.Add(user)
+	if err != nil {
+		return fmt.Errorf("erro no serviço de registro ao inserir o usuário\n%s", err.Error())
 	}
 
 	return nil
