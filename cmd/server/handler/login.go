@@ -21,6 +21,7 @@ type loginHandler struct {
 // Register implements ILoginHandler.
 func (l *loginHandler) Register(w http.ResponseWriter, r *http.Request) {
 	var u *domain.UserPayload
+	ctx := r.Context()
 
 	err := json.NewDecoder(r.Body).Decode(&u)
 	if err != nil {
@@ -28,6 +29,12 @@ func (l *loginHandler) Register(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	err = l.loginService.Register(ctx, u)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusUnauthorized)
+		return
+	}
+	fmt.Fprintf(w, "usuário cadastrado com sucesso")
 }
 
 // Login implements ILoginHandler.

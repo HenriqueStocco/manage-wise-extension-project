@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"manage-wise/cmd/database/impl"
 	d "manage-wise/cmd/domain"
+	"manage-wise/cmd/utils"
 )
 
 type IAuthService interface {
@@ -24,23 +25,27 @@ func (l *loginService) Login(ctx context.Context, user *d.UserLoginPayload) (*d.
 		return nil, fmt.Errorf("erro no serviço de login:\n%+v", err.Error())
 	}
 
-	// pmds isso é só um teste
-	// usar bcrypt dps e tirar essa validação porca
-	if user.Password != result.Password {
-		return nil, fmt.Errorf("erro no serviço de login, validação de senha\nSenhaUsuario:%s\nSenhaBanco:%s",
-			user.Password,
-			result.Password)
+	passwordResult := utils.CheckPassword(user.Password, result.Password)
+	if !passwordResult {
+		return nil, fmt.Errorf("senha incorreta")
 	}
-
 	return result, nil
 }
 
 // Register implements ILoginService.
 func (l *loginService) Register(ctx context.Context, user *d.UserPayload) error {
-	_, err := l.UserRepository.VerifyByEmail(user.Email)
+	err := l.UserRepository.VerifyRegister(user.Email)
 	if err != nil {
-		return fmt.Errorf("erro no serviço de registro ao validar o usuário")
+		return fmt.Errorf("erro no serviço de registro ao validar o usuário\n%s", err.Error())
 	}
+
+	hashedPassword, err := utils.HashPassword(user.Password)
+
+	if err != nil {
+		return fmt.Errorf("erro ao encriptografar a senha do usuário\n%s", err.Error())
+	}
+
+	user.Password = hashedPassword
 
 	_, err = l.UserRepository.Add(user)
 	if err != nil {

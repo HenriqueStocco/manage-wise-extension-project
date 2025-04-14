@@ -14,3 +14,8 @@ func LoginContainer(db *gorm.DB) handler.ILoginHandler {
 	loginHandler := handler.NewAuthHandler(loginService)
 	return loginHandler
 }
+
+func TestContainer() handler.ITestHandler {
+	testHandler := handler.NewTestHandler()
+	return testHandler
+}

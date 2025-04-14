@@ -2,6 +2,7 @@ package server
 
 import (
 	"manage-wise/cmd/containers"
+	m "manage-wise/cmd/middleware"
 	"net/http"
 
 	"gorm.io/gorm"
@@ -24,7 +25,10 @@ func (h *HttpServer) Serve() {
 }
 
 func (h *HttpServer) AlocateContainers(db *gorm.DB) {
-	loginHandler := containers.LoginContainer(db)
+	l := containers.LoginContainer(db)
+	t := containers.TestContainer()
 
-	h.Server.HandleFunc("POST /api/login", loginHandler.Login)
+	h.Server.HandleFunc("GET /api/test", m.AuthenticationMiddleware(t.AuthTest))
+	h.Server.HandleFunc("POST /api/register", l.Register)
+	h.Server.HandleFunc("POST /api/login", l.Login)
 }
