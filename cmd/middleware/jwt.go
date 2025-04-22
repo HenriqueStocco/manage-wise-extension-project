@@ -6,11 +6,11 @@ import (
 	"net/http"
 )
 
-type contextKey string
+type ContextKey string
 
 func AuthenticationMiddleware(handlerWrapper http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		var user contextKey = "user"
+		var user ContextKey = "user"
 		cookie, err := r.Cookie("auth_token")
 		if err != nil {
 			http.Error(w, "token de autenticação não encontrado\n", http.StatusUnauthorized)

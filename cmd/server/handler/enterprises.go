@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"manage-wise/cmd/domain"
+	"manage-wise/cmd/middleware"
 	"manage-wise/cmd/services"
-	"manage-wise/cmd/utils"
 	"net/http"
 )
 
@@ -21,6 +21,7 @@ type enterpriseHandler struct {
 func (e *enterpriseHandler) Add(w http.ResponseWriter, r *http.Request) {
 	var enterprise *domain.EnterprisePayload
 	ctx := r.Context()
+	var userKey middleware.ContextKey = "user"
 
 	err := json.NewDecoder(r.Body).Decode(&enterprise)
 	if err != nil {
@@ -28,17 +29,7 @@ func (e *enterpriseHandler) Add(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	userToken, err := r.Cookie("auth_token")
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
-		return
-	}
-
-	user, err := utils.AuthenticateUserByToken(userToken.Value)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
-		return
-	}
+	user := ctx.Value(userKey).(*domain.User)
 
 	err = e.enterpriseService.CreateEnterprise(ctx, enterprise, user)
 	if err != nil {

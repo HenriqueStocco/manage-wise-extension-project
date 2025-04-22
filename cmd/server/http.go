@@ -26,9 +26,11 @@ func (h *HttpServer) Serve() {
 
 func (h *HttpServer) AlocateContainers(db *gorm.DB) {
 	l := containers.LoginContainer(db)
+	e := containers.EnterpriseContainer(db)
 	t := containers.TestContainer()
 
 	h.Server.HandleFunc("GET /api/test", m.AuthenticationMiddleware(t.AuthTest))
 	h.Server.HandleFunc("POST /api/register", l.Register)
 	h.Server.HandleFunc("POST /api/login", l.Login)
+	h.Server.HandleFunc("POST /api/enterprises/add", m.AuthenticationMiddleware(e.Add))
 }
