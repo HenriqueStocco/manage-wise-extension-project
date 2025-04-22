@@ -1,6 +1,8 @@
 package domain
 
 import (
+	"time"
+
 	"github.com/google/uuid"
 )
 
@@ -9,15 +11,26 @@ type Category struct {
 }
 
 type User struct {
-	ID       uuid.UUID `json:"id" gorm:"type:uuid;default:gen_random_uuid();primaryKey"`
-	Username string    `json:"username"`
-	Email    string    `json:"email" gorm:"unique"`
-	Password string    `json:"password"`
+	ID        uuid.UUID `json:"id" gorm:"type:uuid;default:gen_random_uuid();primaryKey"`
+	Username  string
+	Email     string `gorm:"unique"`
+	Password  string
+	CreatedAt time.Time
 }
 
 type Enterprise struct {
-	ID       uuid.UUID `json:"id" gorm:"type:uuid;default:uuid_generate_v4();primaryKey"`
-	Name     string    `json:"name"`
-	Document string    `json:"document" gorm:"unique"`
-	Phone    string    `json:"phone"`
+	ID        uuid.UUID `json:"id" gorm:"type:uuid;default:gen_random_uuid();primaryKey"`
+	Name      string    `gorm:"unique"`
+	Document  string    `gorm:"unique"`
+	Phone     string
+	CreatedAt time.Time
+}
+
+type UserToEnterprise struct {
+	ID           uuid.UUID  `json:"id" gorm:"type:uuid;default:gen_random_uuid();primaryKey"`
+	UserId       uuid.UUID  `gorm:"foreignKey:UserId;references:ID"`
+	User         User       `gorm:"foreignKey:UserId"`
+	EnterpriseId uuid.UUID  `gorm:"foreignKey:EnterpriseId;references:ID"`
+	Enterprise   Enterprise `gorm:"foreignKey:EnterpriseId"`
+	CreatedAt    time.Time
 }

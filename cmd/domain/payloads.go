@@ -20,3 +20,8 @@ type EnterprisePayload struct {
 	Document string `json:"document"`
 	Phone    string `json:"phone"`
 }
+
+type UserToEnterprisePayload struct {
+	UserId       string `json:"user_id"`
+	EnterpriseId string `json:"enterprise_id"`
+}

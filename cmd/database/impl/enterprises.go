@@ -8,7 +8,7 @@ import (
 )
 
 type IEnterpriseRepository interface {
-	Add(enterprise *domain.EnterprisePayload) (*domain.Enterprise, error)
+	Add(enterprise *domain.EnterprisePayload, user *domain.User) (*domain.Enterprise, error)
 	Update(enterpriseID string, enterprise *domain.EnterprisePayload) (*domain.Enterprise, error)
 }
 
@@ -17,7 +17,7 @@ type enterpriseRepository struct {
 }
 
 // Add implements IEnterpriseRepository.
-func (e *enterpriseRepository) Add(enterprise *domain.EnterprisePayload) (*domain.Enterprise, error) {
+func (e *enterpriseRepository) Add(enterprise *domain.EnterprisePayload, user *domain.User) (*domain.Enterprise, error) {
 	var enterpriseReturned *domain.Enterprise
 	enterpriseInsert := &domain.Enterprise{
 		Name:     enterprise.Name,
@@ -27,6 +27,16 @@ func (e *enterpriseRepository) Add(enterprise *domain.EnterprisePayload) (*domai
 	err := e.db.Create(&enterpriseInsert).Scan(&enterpriseReturned)
 	if err.Error != nil {
 		return nil, fmt.Errorf("erro ao criar a empresa.\n%s", err.Error)
+	}
+
+	enterpriseUserRelation := &domain.UserToEnterprise{
+		UserId:       user.ID,
+		EnterpriseId: enterpriseReturned.ID,
+	}
+
+	err = e.db.Create(&enterpriseUserRelation)
+	if err.Error != nil {
+		return nil, fmt.Errorf("erro ao criar relação do usuário com empresa\n%s", err.Error)
 	}
 
 	return enterpriseReturned, nil
