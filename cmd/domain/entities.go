@@ -6,10 +6,6 @@ import (
 	"github.com/google/uuid"
 )
 
-type Category struct {
-	ID int
-}
-
 type User struct {
 	ID        uuid.UUID `json:"id" gorm:"type:uuid;default:gen_random_uuid();primaryKey"`
 	Username  string
@@ -33,4 +29,25 @@ type UserToEnterprise struct {
 	EnterpriseId uuid.UUID  `gorm:"foreignKey:EnterpriseId;references:ID"`
 	Enterprise   Enterprise `gorm:"foreignKey:EnterpriseId"`
 	CreatedAt    time.Time
+}
+
+type Products struct {
+	ID          uuid.UUID  `gorm:"type:uuid;default:gen_random_uuid();primaryKey"`
+	CategoryId  uuid.UUID  `gorm:"foreignKey:CategoryId;references:ID"`
+	Category    Categories `gorm:"foreignKey:CategoryId"`
+	Name        string     `gorm:"unique"`
+	Description string
+	Sector      string
+	ImageName   string
+	ImageType   string
+	CreatedAt   time.Time
+	UpdatedAt   time.Time
+}
+
+type Categories struct {
+	ID          uuid.UUID `gorm:"type:uuid;default:gen_random_uuid();primaryKey"`
+	Title       string    `gorm:"unique"`
+	Description string
+	CreatedAt   time.Time
+	UpdatedAt   time.Time
 }
