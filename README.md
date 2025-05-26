@@ -14,10 +14,17 @@ Manage Wise is designed to manage a company's active products, making them easie
 <root-project>
 
 api
-  |-- src/
-  |   |-- router/
+  |-- cmd/
+  |   |-- containers/
   |   |-- database/
-  |-- <environment>
+  |   |-- domain/
+  |   |-- middleware/
+  |   |-- server/
+  |   |-- services/
+  |   |-- utils/
+  |-- <go_environment>
+  |-- docker-compose.yaml
+  |-- main.go
 
 app
   |-- src
