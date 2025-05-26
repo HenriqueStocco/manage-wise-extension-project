@@ -1,0 +1,42 @@
+{
+  "private": true,
+  "author": "Henrique Stocco",
+  "scripts": {
+    "dev": "next",
+    "build": "next build",
+    "start": "serve out"
+  },
+  "dependencies": {
+    "@emotion/react": "^11.13.5",
+    "@emotion/styled": "^11.13.5",
+    "@mui/material": "^6.1.8",
+    "@mui/x-data-grid": "^7.22.3",
+    "@reduxjs/toolkit": "^2.3.0",
+    "axios": "^1.7.8",
+    "dotenv": "^16.4.5",
+    "lucide-react": "^0.460.0",
+    "next": "^15.0.3",
+    "numeral": "^2.0.6",
+    "punycode": "^2.3.1",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-redux": "^9.1.2",
+    "recharts": "^2.13.3",
+    "redux-persist": "^6.0.0",
+    "uuid": "^11.0.3"
+  },
+  "devDependencies": {
+    "@next/bundle-analyzer": "^15.0.3",
+    "@types/node": "^22.10.0",
+    "@types/numeral": "^2.0.5",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "@types/uuid": "^10.0.0",
+    "npm-check-updates": "^17.1.11",
+    "postcss": "^8.4.49",
+    "tailwindcss": "^3.4.15",
+    "tw-colors": "^3.3.2",
+    "typescript": "^5.7.2"
+  },
+  "packageManager": "pnpm@10.9.0+sha512.0486e394640d3c1fb3c9d43d49cf92879ff74f8516959c235308f5a8f62e2e19528a65cdc2a3058f587cde71eba3d5b56327c8c33a97e4c4051ca48a10ca2d5f"
+}
