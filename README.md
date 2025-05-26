@@ -6,7 +6,7 @@ Manage Wise is designed to manage a company's active products, making them easie
 
 <h2 id="stack">💻 Stack</h2>
 
-[![My Skills](https://skillicons.dev/icons?i=ts,docker,postgres,nextjs,tailwind,materialui,redux,workers,cloudflare,figma,git,github)](https://skillicons.dev)
+[![My Skills](https://skillicons.dev/icons?i=ts,docker,postgres,nextjs,tailwind,materialui,redux,workers,cloudflare,figma,git,github,go,postman)](https://skillicons.dev)
 
 ### 📁 Structure
 
